@@ -1,0 +1,33 @@
+name: Build Windows App
+
+on:
+  workflow_dispatch: # Позволяет запускать сборку вручную по кнопке
+
+jobs:
+  build-windows:
+    runs-on: windows-latest # Указываем среду Windows
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12' # 3.14 пока не поддерживается в GitHub Actions
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install questionary pyinstaller rich
+
+      - name: Build with PyInstaller
+        # Указываем точный путь до скрипта
+        run: pyinstaller --onefile projects/vms-box/wizard_settings.py
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-wizard-app
+          # На Windows PyInstaller обязательно добавляет расширение .exe
+          path: dist/wizard_settings.exe
