@@ -1,3 +1,3 @@
 ﻿@echo off
-REM Глобальная точка входа в меню
-python "D:\github\cli-tools\cli_menu.py" %*
+REM Глобальная точка входа в меню (путь вычисляется автоматически)
+python "%~dp0..\cli_menu.py" %*
